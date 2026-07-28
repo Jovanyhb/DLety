@@ -51,7 +51,7 @@ def agregar():
     return render_template('agregar.html')
 
 # Editar producto
-@app.route('/editar/<int:id>', methods=['GET','POST'])
+@app.route('/editar/<int:id>', methods=['POST'])
 def editar(id):
     cur = mysql.connection.cursor()
     if request.method == 'POST':
