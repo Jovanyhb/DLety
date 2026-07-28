@@ -10,11 +10,11 @@ def get_db_connection():
     try:
         connection = mysql.connector.connect(
             # Si están en la nube usa la variable de entorno, si no, usa el valor local
-            host=os.environ.get('DB_HOST', 'localhost'),       # Cambiar 'localhost' si su servidor local es diferente
-            port=int(os.environ.get('DB_PORT', 3306)),         # Cambiar 3306 si usan otro puerto local
-            user=os.environ.get('DB_USER', 'root'),             # Tu usuario local de MySQL (ej. root)
-            password=os.environ.get('DB_PASSWORD', ''),        # Tu contraseña local de MySQL (dejar '' si no tiene)
-            database=os.environ.get('DB_NAME', 'inventario')         # Nombre de tu base de datos local
+            host=os.environ.get('DB_HOST', 'mysql-3d7627b1-testsoftware.i.aivencloud.com'),       # Cambiar 'localhost' si su servidor local es diferente
+            port=int(os.environ.get('DB_PORT', 18565)),         # Cambiar 3306 si usan otro puerto local
+            user=os.environ.get('DB_USER', 'avnadmin'),             # Tu usuario local de MySQL (ej. root)
+            password=os.environ.get('DB_PASSWORD', 'AVNS_Sxk-tBFfisMvmAnqW4y'),        # Tu contraseña local de MySQL (dejar '' si no tiene)
+            database=os.environ.get('DB_NAME', 'defaultdb')         # Nombre de tu base de datos local
         )
         return connection
     except mysql.connector.Error as e:
