@@ -29,7 +29,7 @@ def get_db_connection():
 # Ruta principal: listar productos
 @app.route('/')
 def index():
-    cunn = get_db_connection()
+    conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("SELECT * FROM productos")
     data = cur.fetchall()
