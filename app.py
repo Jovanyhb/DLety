@@ -1,0 +1,63 @@
+from flask import Flask, render_template, request, redirect
+from flask_mysqldb import MySQL
+
+app = Flask(__name__)
+
+# Configuración MySQL
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'inventario'
+mysql = MySQL(app)
+
+# Ruta principal: listar productos
+@app.route('/')
+def index():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM productos")
+    data = cur.fetchall()
+    cur.close()
+    return render_template('index.html', productos=data)
+
+# Agregar producto
+@app.route('/agregar', methods=['GET','POST'])
+def agregar():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        cantidad = request.form['cantidad']
+        precio = request.form['precio']
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO productos (nombre, cantidad, precio) VALUES (%s,%s,%s)", (nombre, cantidad, precio))
+        mysql.connection.commit()
+        cur.close()
+        return redirect('/')
+    return render_template('agregar.html')
+
+# Editar producto
+@app.route('/editar/<int:id>', methods=['GET','POST'])
+def editar(id):
+    cur = mysql.connection.cursor()
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        cantidad = request.form['cantidad']
+        precio = request.form['precio']
+        cur.execute("UPDATE productos SET nombre=%s, cantidad=%s, precio=%s WHERE id=%s", (nombre, cantidad, precio, id))
+        mysql.connection.commit()
+        cur.close()
+        return redirect('/')
+    cur.execute("SELECT * FROM productos WHERE id=%s", [id])
+    producto = cur.fetchone()
+    cur.close()
+    return render_template('editar.html', producto=producto)
+
+# Eliminar producto
+@app.route('/eliminar/<int:id>')
+def eliminar(id):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM productos WHERE id=%s", [id])
+    mysql.connection.commit()
+    cur.close()
+    return redirect('/')
+
+if __name__ == '__main__':
+    app.run(debug=True)
