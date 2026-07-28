@@ -19,7 +19,7 @@ def get_db_connection():
         )
         return connection
     except mysql.connector.Error as e:
-        print(f"X Error de conexión a BD: {e}")
+        print(f"X Error de conexión a DB: {e}")
         raise
 #app.config['MYSQL_HOST'] = 'localhost'
 #app.config['MYSQL_USER'] = 'root'
