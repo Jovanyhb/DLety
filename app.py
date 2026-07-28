@@ -37,7 +37,7 @@ def index():
     return render_template('index.html', productos=data)
 
 # Agregar producto
-@app.route('/agregar', methods=['GET','POST'])
+@app.route('/agregar', methods=['POST'])
 def agregar():
     if request.method == 'POST':
         nombre = request.form['nombre']
