@@ -29,7 +29,7 @@ def get_db_connection():
 # Ruta principal: listar productos
 @app.route('/')
 def index():
-    cur = get_db_connection()
+    cunn = get_db_connection()
     cur = conn.cursor()
     cur.execute("SELECT * FROM productos")
     data = cur.fetchall()
@@ -53,7 +53,7 @@ def agregar():
 # Editar producto
 @app.route('/editar/<int:id>', methods=['POST'])
 def editar(id):
-    cur = get_db_connection()
+    conn = get_db_connection()
     cur = conn.cursor()
     if request.method == 'POST':
         nombre = request.form['nombre']
@@ -71,7 +71,7 @@ def editar(id):
 # Eliminar producto
 @app.route('/eliminar/<int:id>')
 def eliminar(id):
-    cur = get_db_connection()
+    conn = get_db_connection()
     cur = conn.cursor()
     cur.execute("DELETE FROM productos WHERE id=%s", [id])
     conn.commit()
