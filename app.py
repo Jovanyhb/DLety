@@ -30,7 +30,8 @@ def get_db_connection():
 # Ruta principal: listar productos
 @app.route('/')
 def index():
-    cur = mysql.connector.cursor()
+    cur = get_db_connection()
+    cur = conn.cursor()
     cur.execute("SELECT * FROM productos")
     data = cur.fetchall()
     cur.close()
@@ -45,7 +46,7 @@ def agregar():
         precio = request.form['precio']
         cur = mysql.connector.cursor()
         cur.execute("INSERT INTO productos (nombre, cantidad, precio) VALUES (%s,%s,%s)", (nombre, cantidad, precio))
-        mysql.connector.commit()
+        conn.commit()
         cur.close()
         return redirect('/')
     return render_template('agregar.html')
@@ -53,13 +54,14 @@ def agregar():
 # Editar producto
 @app.route('/editar/<int:id>', methods=['POST'])
 def editar(id):
-    cur = mysql.connector.cursor()
+    cur = get_db_connection()
+    cur = conn.cursor()
     if request.method == 'POST':
         nombre = request.form['nombre']
         cantidad = request.form['cantidad']
         precio = request.form['precio']
         cur.execute("UPDATE productos SET nombre=%s, cantidad=%s, precio=%s WHERE id=%s", (nombre, cantidad, precio, id))
-        mysql.connector.commit()
+        conn.commit()
         cur.close()
         return redirect('/')
     cur.execute("SELECT * FROM productos WHERE id=%s", [id])
@@ -70,9 +72,10 @@ def editar(id):
 # Eliminar producto
 @app.route('/eliminar/<int:id>')
 def eliminar(id):
-    cur = mysql.connector.cursor()
+    cur = get_db_connection()
+    cur = conn.cursor()
     cur.execute("DELETE FROM productos WHERE id=%s", [id])
-    mysql.connector.commit()
+    conn.commit()
     cur.close()
     return redirect('/')
 
